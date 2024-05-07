@@ -6,29 +6,25 @@ use App\Models\Report;
 
 class ReportRetrievalService
 {
-    public function getAllReport()
+    public function getAllReports()
     {
         return Report::all();
-    }
-    public function getReportById($id)
-    {
-        return Report::find($id);
     }
     public function getReportByUserId($userId)
     {
         return Report::where('user_id', $userId)->get();
     }
-    public function getReportByDepartmentId($departmentId)
+    public function getReportByDepartment($department)
     {
-        return Report::where('department_id', $departmentId)->get();
+        return Report::where('department', $department)->get();
     }
-    public function getReportByBuildingId($buildingId)
+    public function getReportByBuilding($building)
     {
-        return Report::where('building_id', $buildingId)->get();
+        return Report::where('building', $building)->get();
     }
-    public function getReportByRoomId($roomId)
+    public function getReportByRoom($room)
     {
-        return Report::where('room_id', $roomId)->get();
+        return Report::where('room', $room)->get();
     }
     public function getReportByType($type)
     {

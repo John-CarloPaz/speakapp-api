@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     use HasFactory;
-
+    protected $table = 'reports';
     protected $fillable = [
         'user_id',
         'title',
@@ -16,9 +16,9 @@ class Report extends Model
         'file',
         'type',
         'status',
-        'department_id',
-        'building_id',
-        'room_id',
+        'department',
+        'building',
+        'room',
     ];
 
     public function user()

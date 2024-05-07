@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Report;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ReportService
 {
@@ -12,23 +14,25 @@ class ReportService
         $this->reportData = $data;
     }
 
-    public function generateReport(): string
+    public function generateReport(): JsonResponse
     {
         $uniqueId = uniqid();
-        $filename = $this->reportData['user_id'] . '-' . $uniqueId .$this->reportData['filename']->extension();
-        $path = storage_path('reports/' . $filename);
-        file_put_contents($path);
+        $extension = $this->reportData['file']->extension();
+        $filename = $this->reportData['user_id'] . '-' . $uniqueId . '.' . $extension;
+        Storage::disk('public')->put('reports/' . $filename, $this->reportData['file']->getContent());
 
         $report = new Report();
-        $report->user_id = $this->reportData['user_id'];
-        $report->title = $this->reportData['title'];
-        $report->description = $this->reportData['description'];
-        $report->file = $filename;
-        $report->type = $this->reportData['type'];
-        $report->status = $this->reportData['status'];
-        $report->department_id = $this->reportData['department_id'];
-        $report->building_id = $this->reportData['building_id'];
-        $report->room_id = $this->reportData['room_id'];
+        $report->fill([
+            'user_id' => $this->reportData['user_id'],
+            'title' => $this->reportData['title'],
+            'description' => $this->reportData['description'],
+            'file' => $filename,
+            'type' => $this->reportData['type'],
+            'department' => $this->reportData['department'],
+            'building' => $this->reportData['building'],
+            'room' => $this->reportData['room'],
+            'status' => $this->reportData['status'],
+        ]);
         $report->save();
 
         return response()->json([

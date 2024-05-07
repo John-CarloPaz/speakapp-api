@@ -16,11 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('title');
             $table->string('description');
-            $table->string('file');
+            $table->string('file')->nullable();
             $table->string('type')->default('facility'); // Facility, Administration, Others
-            $table->string('department')->nullable();
-            $table->string('building')->nullable();
-            $table->string('room')->nullable();
+            $table->string('department');
+            $table->string('building');
+            $table->string('room');
             $table->string('status')->default('pending');
 
             $table->timestamps();
